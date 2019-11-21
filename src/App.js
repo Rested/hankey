@@ -1,25 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Container, Header } from 'semantic-ui-react';
+import TargetCharacter from './components/TargetCharacter';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className='App'>
+      <Header sub>Hankey</Header>
+      <span>Learn 2 set Hangul keyboard</span>
+      <Container>
+          <TargetCharacter></TargetCharacter>
+      </Container>
+    </Container>
   );
 }
 

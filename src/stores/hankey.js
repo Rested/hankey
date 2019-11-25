@@ -16,6 +16,7 @@ const initialState = {
     disabledKeys: [],
     ignoreInputs: false,
     mode: MODE_GAME,
+    recentSuccesses: []
 };
 
 const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : initialState

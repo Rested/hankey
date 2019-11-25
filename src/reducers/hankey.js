@@ -40,7 +40,7 @@ function getKeySchedule(keyState, character) {
     return key.lastSchedule;
 }
 
-function getNextCharacter(keyState, currentTarget) {
+function getNextCharacter(keyState, recents) {
     const sortedBySchedule = [...keyState].sort((charA, charB) => {
         const val = (charA.lastSchedule || 0) - (charB.lastSchedule || 0)
         return val;
@@ -49,12 +49,29 @@ function getNextCharacter(keyState, currentTarget) {
     const getOnlyTheSoonest = sortedBySchedule.filter((val, indx, arr) => (getKeySchedule(keyState, val) || 0) === (getKeySchedule(keyState, arr[0]) || 0))
     console.log('soonest', getOnlyTheSoonest)
     if (getOnlyTheSoonest.length === sortedBySchedule.length) {
-        const nextChar = frequencyOrdered[(frequencyOrdered.indexOf(currentTarget) + 1) % frequencyOrdered.length]
-        console.log('next char', nextChar, 'freq ord', frequencyOrdered, 'current targ', currentTarget);
+        
+        let nextChar = frequencyOrdered[(frequencyOrdered.indexOf(recents[recents.length-1]) + 1) % frequencyOrdered.length]
+        let offset = 2;
+        while(recents.includes(nextChar)){
+            nextChar = frequencyOrdered[(frequencyOrdered.indexOf(recents[recents.length-1]) + offset) % frequencyOrdered.length]
+            offset++;
+        }
+        console.log('next char 1', nextChar);
         return nextChar;
     }
     const sortSoonestByFrequency = getOnlyTheSoonest.sort((k1, k2) => frequencyOrdered.indexOf(k1.character) - frequencyOrdered.indexOf(k2.character));
     console.log('freq', sortSoonestByFrequency);
+    if (recents.includes(sortSoonestByFrequency[0].character)){
+        let offset = 0;
+        let nextChar;
+        while(recents.includes(nextChar) || offset === 0){
+            nextChar = sortSoonestByFrequency[offset%sortSoonestByFrequency.length].character
+            offset++;
+        }
+        console.log('next char 2', nextChar);
+        return nextChar;
+    }
+    console.log('nc3')
     return sortSoonestByFrequency[0].character;
 }
 
@@ -83,7 +100,6 @@ function hankeyApp(state, action) {
                         const {
                             schedule,
                             factor,
-                            isRepeatAgain
                         } = supermemo2(Math.max(5 - state.keypresses.length, 0), key.lastSchedule, key.lastFactor)
                         return {
                             ...key,
@@ -94,13 +110,15 @@ function hankeyApp(state, action) {
                     }
                     return key
                 })
+                let recentSuccesses = [...(state.recentSuccesses || []), state.targetCharacter]
                 return {
                     ...state,
                     keypresses: [],
                     disabledKeys: [],
                     ignoreInputs: false,
                     keyState: newState,
-                    targetCharacter: getNextCharacter(newState, state.targetCharacter)
+                    targetCharacter: getNextCharacter(newState, recentSuccesses),
+                    recentSuccesses: recentSuccesses.slice(Math.max(recentSuccesses.length - 5, 0))
                 }
             }
             const sotedFilteredKeys = [...allKoreanCharacters].sort((a, b) => action.random[allKoreanCharacters.indexOf(a)] - 0.5)

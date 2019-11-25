@@ -41,7 +41,7 @@ function getNextCharacter(keyState, recents) {
         
         let nextChar = frequencyOrdered[(frequencyOrdered.indexOf(recents[recents.length-1]) + 1) % frequencyOrdered.length]
         let offset = 2;
-        while(recents.includes(nextChar)){
+        while(recents.includes(nextChar) && offset < 7){
             nextChar = frequencyOrdered[(frequencyOrdered.indexOf(recents[recents.length-1]) + offset) % frequencyOrdered.length]
             offset++;
         }
@@ -53,7 +53,7 @@ function getNextCharacter(keyState, recents) {
     if (recents.includes(sortSoonestByFrequency[0].character)){
         let offset = 0;
         let nextChar;
-        while(recents.includes(nextChar) || offset === 0){
+        while((recents.includes(nextChar) || offset === 0) && offset < 5){
             nextChar = sortSoonestByFrequency[offset%sortSoonestByFrequency.length].character
             offset++;
         }
@@ -94,7 +94,7 @@ function hankeyApp(state, action) {
                             ...key,
                             lastFactor: factor,
                             lastSchedule: schedule,
-                            pressedDate: action.pressedDate,
+                            pressedDate: action.pressDate,
                         }
                     }
                     return key

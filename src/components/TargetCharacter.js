@@ -1,8 +1,27 @@
 import React from 'react';
-import { Segment, Header } from 'semantic-ui-react';
+import {
+    connect
+} from 'react-redux';
+import {
+    isSecondary
+} from '../core/keys';
+import Key from './Key';
 
-export default function TargetCharacter({character}) {
-    return (<Segment className='target-character'>
-        <Header>{character}</Header>
-    </Segment>)
+function TargetCharacter({
+    character
+}) {
+    return (
+        <Key
+            style={{fontSize:25}}
+            compact
+            korean={isSecondary(character) || character}
+            koreanSecondary={isSecondary(character) && character}
+        />
+    )
 }
+
+const mapStateToProps = state => ({
+    character: state.targetCharacter,
+})
+
+export default connect(mapStateToProps)(TargetCharacter)

@@ -15,7 +15,7 @@ function calcFactor(oldFac, quality) {
 export default function (quality, lastSchedule, lastFactor) {
     let newFac
     let curSchedule
-    
+    console.log(quality, lastFactor, lastSchedule);
     if(quality == null || quality < 0 || quality > 5) {
         quality = 0
     }

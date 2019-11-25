@@ -21,18 +21,7 @@ import supermemo2 from '../core/supermemo2';
 
 
 function keyMatchesTarget(keyEnglish, targetHangul) {
-    const targetIsSecondary = isSecondary(targetHangul);
-    const targetEnglish = hangulToEnglish(targetHangul)
-    if (keyEnglish.toUpperCase() === targetEnglish.toUpperCase()) {
-        if (keyEnglish.toUpperCase() === keyEnglish && targetIsSecondary) {
-            return true
-        }
-        if (keyEnglish.toLowerCase() === keyEnglish && !targetIsSecondary) {
-            return true
-        }
-    }
-
-    return false
+    return englishToHangul[keyEnglish] === targetHangul;
 }
 
 function getKeySchedule(keyState, character) {

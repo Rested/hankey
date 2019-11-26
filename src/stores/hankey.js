@@ -20,6 +20,12 @@ const initialState = {
 };
 
 const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : initialState
+persistedState.keyState = persistedState.keyState.map(k => {
+    return k.pressedDate ? ({
+    ...k,
+    pressedDate: new Date(k.pressedDate) 
+    }) : k
+});
 const store = createStore(hankeyApp, persistedState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(()=>{

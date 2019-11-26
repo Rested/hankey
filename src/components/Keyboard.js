@@ -21,6 +21,7 @@ import {
     mappedKeyboard
 } from '../core/keys';
 import Key from './Key';
+import { playSound } from '../core/sounds';
 
 const incorrectKeyStyle = {
     color: 'red',
@@ -70,6 +71,7 @@ function Keyboard({
         if (previousTargetCharacter && targetCharacter && previousTargetCharacter !== targetCharacter) {
             setAnimating(previousTargetCharacter);
             ignoreInput(true);
+            playSound(previousTargetCharacter);
             setTimeout(() => {
                 ignoreInput(false);
                 setAnimating(false);

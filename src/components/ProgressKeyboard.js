@@ -18,7 +18,13 @@ import {
 import Key from './Key';
 
 const getNextLevel = progress => {
-    return parseInt(Object.keys(LEVEL_BREAKPOINTS).sort().find(level => LEVEL_BREAKPOINTS[level] > progress))
+    const levelKeys = Object.keys(LEVEL_BREAKPOINTS).sort();
+    const level = levelKeys.find(level => LEVEL_BREAKPOINTS[level] > progress)
+    console.log('level', level);
+    if (!level){
+        return parseInt(levelKeys[levelKeys.length-1])
+    }
+    return parseInt(level);
 }
 
 function ProgressKeyboard({
@@ -39,7 +45,7 @@ function ProgressKeyboard({
                     const nextLevel = getNextLevel(progress)
 
                     return (<GridColumn key={english} style={{paddingLeft: '0.1rem', paddingRight: '0.1rem'}} textAlign='center'>
-                        <Rating icon='star' size='mini' disabled defaultRating={0} rating={nextLevel} maxRating={Object.keys(LEVEL_BREAKPOINTS).length-1} />
+                        <Rating icon='star' size='mini' disabled rating={nextLevel} maxRating={Object.keys(LEVEL_BREAKPOINTS).length-1} />
                         <Key english={english} progress={progress} level={nextLevel} korean={korean} koreanSecondary={koreanSecondary} style={{marginTop: 0}}/></GridColumn>)})}
             </GridRow>)
         )}

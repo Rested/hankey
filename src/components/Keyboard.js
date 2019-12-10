@@ -11,17 +11,22 @@ import {
     GridRow
 } from 'semantic-ui-react';
 import {
-    ignoreInputs,
     pressKey
 } from '../actions/hankey';
 import {
-    usePrevious
+    MODE_GAME
+} from '../constants';
+import {
+    usePrevious,
+    useSpeechSynthesis
 } from '../core/hooks';
 import {
     mappedKeyboard
 } from '../core/keys';
+import {
+    soundMapping
+} from '../core/sounds';
 import Key from './Key';
-import { playSound } from '../core/sounds';
 
 const incorrectKeyStyle = {
     color: 'red',
@@ -55,30 +60,62 @@ function Keyboard({
     removedKeys,
     targetCharacter,
     failures,
-    onPress,
-    ignoreInput
+    onPress
 }) {
-    const [animating, setAnimating] = useState(false)
-    useEffect(() => {
-        window.addEventListener("keypress", onPress)
-        return () => {
-            window.removeEventListener("keypress", onPress)
+    const [animating, setAnimating] = useState(false);
+    const [
+        ignoreInputs, setIgnoreInput
+    ] = useState(false);
+    const {
+        speak,
+        savedUtterance
+    } = useSpeechSynthesis({
+        onEnd: (wasCancelled) => {
+            if (!wasCancelled) {
+                console.log('trying to change stuff here')
+                setIgnoreInput(false);
+                setAnimating(false);
+            }
         }
-    })
+    });
+    useEffect(() => {
+        const onPressNoIgnore = (event) => {
+            console.log(ignoreInputs);
+            if (ignoreInputs) return;
+            console.log('on press triggered')
+
+            return onPress(event);
+        }
+        console.log('adding keypress listener');
+        window.addEventListener("keypress", onPressNoIgnore);
+        return () => {
+            window.removeEventListener("keypress", onPressNoIgnore)
+        }
+    }, [ignoreInputs, onPress]);
+
     const previousTargetCharacter = usePrevious(targetCharacter);
     useEffect(() => {
         console.log('using effect');
         if (previousTargetCharacter && targetCharacter && previousTargetCharacter !== targetCharacter) {
             setAnimating(previousTargetCharacter);
-            ignoreInput(true);
-            playSound(previousTargetCharacter);
-            setTimeout(() => {
-                ignoreInput(false);
-                setAnimating(false);
-            }, 1000)
+            setIgnoreInput(true);
+            speak({
+                text: soundMapping[previousTargetCharacter],
+                lang: 'ko-KR',
+                rate: 0.6
+            });
         }
+    }, [targetCharacter, setIgnoreInput, previousTargetCharacter, speak])
+    useEffect(() => {
+        return () => {
+            console.log('unmount');
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            if (savedUtterance && savedUtterance.current){
+                savedUtterance.current.onend = null;
 
-    }, [targetCharacter, ignoreInput, previousTargetCharacter])
+            }
+        }
+    }, []);
 
     return (<Grid container>
         {mappedKeyboard.map((row, rowIndex) => (
@@ -116,17 +153,16 @@ Keyboard.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-    removedKeys: state.disabledKeys,
-    failures: state.keypresses,
-    targetCharacter: state.targetCharacter
+    removedKeys: state.keys.disabledKeys,
+    failures: state.keys.keypresses,
+    targetCharacter: state.keys.targetCharacter
 });
 const mapDispatchToProps = dispatch => {
     return {
         onPress: (event) => {
-            dispatch(pressKey(event.key))
-        },
-        ignoreInput: (yayOrNay) => {
-            dispatch(ignoreInputs(yayOrNay))
+            console.log('on press triggered')
+
+            dispatch(pressKey(event.key, MODE_GAME))
         }
     }
 }

@@ -1,6 +1,7 @@
 // modes
 export const MODE_GAME = 'Learn';
 export const MODE_PROGRESS = 'Progress';
+export const MODE_WORDS = 'Words';
 
 // progress
 export const LEVEL_BREAKPOINTS = {

@@ -13,9 +13,11 @@ export const soundMapping = (()=> {
     return mapping;
 })() 
 
-export function playSound(character){
+export function playSound(character, onEndCallback){
     const utterance = new SpeechSynthesisUtterance(soundMapping[character]);
     utterance.lang = 'ko-KR'
     utterance.rate = 0.6
+    utterance.onend = onEndCallback;
     speechSynthesis.speak(utterance)
+    
 }

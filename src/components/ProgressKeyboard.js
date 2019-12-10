@@ -21,8 +21,8 @@ const getNextLevel = progress => {
     const levelKeys = Object.keys(LEVEL_BREAKPOINTS).sort();
     const level = levelKeys.find(level => LEVEL_BREAKPOINTS[level] > progress)
     console.log('level', level);
-    if (!level){
-        return parseInt(levelKeys[levelKeys.length-1])
+    if (!level) {
+        return parseInt(levelKeys[levelKeys.length - 1])
     }
     return parseInt(level);
 }
@@ -32,7 +32,7 @@ function ProgressKeyboard({
 }) {
     return (<Grid container columns={16}>
         {mappedKeyboard.map((row, rowIndex) => (
-            <GridRow centered key={`keyboarRow${rowIndex}`} relaxed>
+            <GridRow centered key={`keyboarRow${rowIndex}`}>
                 {row.map(({english, korean, koreanSecondary}) => {
                     let progress;
                     const primaryNextPractise = timeTillNextPractise.find(({character}) => character === korean).nextPractise 
@@ -44,16 +44,18 @@ function ProgressKeyboard({
                     }
                     const nextLevel = getNextLevel(progress)
 
-                    return (<GridColumn key={english} style={{paddingLeft: '0.1rem', paddingRight: '0.1rem'}} textAlign='center'>
+                    return (
+                    <GridColumn key={english} style={{paddingLeft: '0.1rem', paddingRight: '0.1rem'}} textAlign='center'>
                         <Rating icon='star' size='mini' disabled rating={nextLevel} maxRating={Object.keys(LEVEL_BREAKPOINTS).length-1} />
-                        <Key english={english} progress={progress} level={nextLevel} korean={korean} koreanSecondary={koreanSecondary} style={{marginTop: 0}}/></GridColumn>)})}
+                        <Key english={english} progress={progress} level={nextLevel} korean={korean} koreanSecondary={koreanSecondary} style={{marginTop: 0}}/>
+                    </GridColumn>)})}
             </GridRow>)
         )}
     </Grid>)
 }
 
 const mapStateToProps = state => {
-    const timeTillNextPractise = state.keyState.map(k => {
+    const timeTillNextPractise = state.keys.keyState.map(k => {
         return {
             character: k.character,
             nextPractise: k.lastSchedule - parseInt(((new Date()).getTime() - (k.pressedDate || new Date()).getTime()) / (1000 * 3600 * 24))

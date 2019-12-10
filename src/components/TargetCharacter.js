@@ -21,7 +21,7 @@ function TargetCharacter({
 }
 
 const mapStateToProps = state => ({
-    character: state.targetCharacter,
+    character: state.keys.targetCharacter,
 })
 
 export default connect(mapStateToProps)(TargetCharacter)

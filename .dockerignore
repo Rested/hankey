@@ -5,3 +5,4 @@ translate/
 node_modules
 Dockerfile
 .dockerignore
+build/

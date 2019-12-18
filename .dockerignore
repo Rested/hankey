@@ -1,0 +1,7 @@
+.vscode
+.git*
+character_frequency/
+translate/
+node_modules
+Dockerfile
+.dockerignore

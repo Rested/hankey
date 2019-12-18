@@ -7,7 +7,7 @@ export default function Progress(){
         <Grid centered>
         <GridRow>
           <GridColumn textAlign='center'>
-            <p>Progress and levels</p>
+            <span className='white'>Progress and levels</span>
           </GridColumn>
         </GridRow>
         <GridRow>

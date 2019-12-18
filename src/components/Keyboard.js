@@ -28,32 +28,6 @@ import {
 } from '../core/sounds';
 import Key from './Key';
 
-const incorrectKeyStyle = {
-    color: 'red',
-    backgroundColor: 'lightpink',
-    borderColor: 'red',
-    opacity: 0.8
-}
-
-const removedKeyStyle = {
-    color: 'gray',
-    backgroundColor: 'lightgray',
-    borderColor: 'gray',
-    opacity: 0.8
-}
-const nearMissStyle = {
-    color: 'orange',
-    backgroundColor: 'yellow',
-    borderColor: 'orange',
-    opacity: 0.8
-}
-
-const pressedStyle = {
-    color: 'green',
-    backgroundColor: 'lightgreen',
-    borderColor: 'green',
-    animation: 'flash linear 1s infinite'
-}
 
 
 function Keyboard({
@@ -68,16 +42,17 @@ function Keyboard({
     ] = useState(false);
     const {
         speak,
-        savedUtterance
+        savedUtterance,
+        cancel
     } = useSpeechSynthesis({
         onEnd: (wasCancelled) => {
             if (!wasCancelled) {
-                console.log('trying to change stuff here')
-                setIgnoreInput(false);
                 setAnimating(false);
             }
         }
     });
+    const previousTargetCharacter = usePrevious(targetCharacter);
+
     useEffect(() => {
         const onPressNoIgnore = (event) => {
             console.log(ignoreInputs);
@@ -93,19 +68,19 @@ function Keyboard({
         }
     }, [ignoreInputs, onPress]);
 
-    const previousTargetCharacter = usePrevious(targetCharacter);
     useEffect(() => {
         console.log('using effect');
         if (previousTargetCharacter && targetCharacter && previousTargetCharacter !== targetCharacter) {
             setAnimating(previousTargetCharacter);
-            setIgnoreInput(true);
+            cancel();
+
             speak({
                 text: soundMapping[previousTargetCharacter],
                 lang: 'ko-KR',
                 rate: 0.6
             });
         }
-    }, [targetCharacter, setIgnoreInput, previousTargetCharacter, speak])
+    }, [targetCharacter, previousTargetCharacter, speak]);
     useEffect(() => {
         return () => {
             console.log('unmount');
@@ -121,27 +96,27 @@ function Keyboard({
         {mappedKeyboard.map((row, rowIndex) => (
             <GridRow centered key={`keyboarRow${rowIndex}`}>
                 {row.map(({english, korean, koreanSecondary}) => {
-                    let style = {};
+                    let keyClass = '';
                     const isTargetKey = (korean === targetCharacter || koreanSecondary === targetCharacter);
                     let reveal = false;
                     if (removedKeys.includes(korean) || removedKeys.includes(koreanSecondary)){
-                        style = removedKeyStyle;
                         reveal = true;
+                        keyClass = 'inactive';
                     } 
                     if (failures.includes(koreanSecondary) || failures.includes(korean)){
                         if (isTargetKey){
-                            style = nearMissStyle;
                             reveal = false;
+                            keyClass = 'near-miss';
                         }  else {
-                            style = incorrectKeyStyle;
+                            keyClass = 'error';
                         }
                     }
                     if (animating && (korean === animating || koreanSecondary === animating)){
-                        style = pressedStyle;
+                        keyClass = 'pressed';
                         reveal = true;
                     } 
                     return (<GridColumn key={english} style={{paddingLeft: '0.1rem', paddingRight: '0.1rem'}}>
-                        <Key english={english} style={style} korean={reveal ? korean : ''} koreanSecondary={reveal ? koreanSecondary : ''}/></GridColumn>)})}
+                        <Key english={english} className={keyClass} korean={reveal ? korean : ''} koreanSecondary={reveal ? koreanSecondary : ''}/></GridColumn>)})}
             </GridRow>)
         )}
     </Grid>)

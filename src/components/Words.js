@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Container, Segment, Header, Statistic, Icon, Input } from 'semantic-ui-react';
+import { Container, Segment, Header, Statistic, Icon, Input, Label } from 'semantic-ui-react';
 import WordStats from './WordStats';
 import {connect} from 'react-redux';
 import {
@@ -10,11 +10,13 @@ import { MODE_WORDS } from '../constants';
 import {
     useSpeechSynthesis
 } from '../core/hooks';
+import translations from '../core/translations';
 
 function Words({onPress, currentWord, currentWordRemaining, currentWordErrors, currentWordProgress}){
     const {
         speak,
     } = useSpeechSynthesis();
+
 
     useEffect(()=> {
         speak({
@@ -23,6 +25,7 @@ function Words({onPress, currentWord, currentWordRemaining, currentWordErrors, c
             rate: 0.6
         })
     }, [currentWord]);
+    
 
     useEffect(() => {
         window.addEventListener("keypress", onPress);
@@ -69,19 +72,34 @@ function Words({onPress, currentWord, currentWordRemaining, currentWordErrors, c
     
     return (
     <Container>
-        <Segment fluid>
-            <Header as="h1">
-                <span style={{color: 'green'}}>{reducedLetters.green}</span>
-                <span style={{color: 'blue'}}>{reducedLetters.blue}</span>
+        <Segment.Group>
+            <Segment.Group horizontal>
+        <Segment>
+            <Label color='blue' attached='bottom left' icon={{name: 'target', color:'white'}}></Label>
+            <Header as="h1" style={{display: 'inline'}}>
+                <span className='yellow'>{reducedLetters.green}</span>
+                <span className='blue'>{reducedLetters.blue}</span>
                 <span>{reducedLetters.black}</span>
             </Header>
         </Segment>
         <Segment>
-            <Header as="h2" color="red">{currentWordErrors}</Header>
+            <Header as='h1'>
+                {translations[currentWord]}
+            </Header>
+        </Segment>
+        </Segment.Group>
+        <Segment>
+            <Label color='blue' attached='bottom left' icon={{name: 'keyboard', color:'yellow'}}></Label>
+            <Header as="h1" style={{display: 'inline'}}>
+                <span className='yellow'>{currentWordProgress || '\u00a0'}</span>
+            </Header>
         </Segment>
         <Segment>
-            <WordStats/>
+            <Label color='blue' attached='bottom left' icon={{name: 'keyboard', color:'red'}}></Label>
+            <Header as="h2" color="red" style={{display: 'inline'}}>{currentWordErrors || '\u00a0'}</Header>
         </Segment>
+        </Segment.Group>
+        <WordStats/>
     </Container>
     );
 } 

@@ -1,0 +1,18 @@
+/*******************************
+     User Global Variables
+*******************************/
+// obangsaek
+@yellow: #FEDC01;
+@red: #E50041;
+@blue: #005CA7;
+@black: #1D1D1B;
+@white: #FFFFFF;
+// derivative colors
+@orange: mix(@red, @yellow, 50%);
+
+@textColor: @black;
+
+@primaryColor: @white;
+@pageBackground: @blue;
+@secondaryColor: @blue;
+

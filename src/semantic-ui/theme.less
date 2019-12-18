@@ -1,0 +1,66 @@
+// obangsaek
+@yellow: #FEDC01;
+@red: #E50041;
+@blue: #005CA7;
+@black: #1D1D1B;
+@white: #FFFFFF;
+
+span.yellow {
+    color: @yellow;
+}
+span.blue {
+    color: @blue;
+}
+span.white {
+    color: @white;
+}
+
+.segment.key.error {
+    color: @black;
+    background-color: lighten(@red, 10%);
+    border-color: @red;
+}
+
+.segment.key.inactive {
+    color: @black;
+    background-color: darken(@white, 30%);
+    border-color: darken(@white, 50%);
+}
+.segment.key.near-miss {
+    color: @black;
+    background-color: darken(@yellow, 10%);
+    border-color: @yellow;
+}
+
+.segment.key.pressed {
+    background-color: @yellow;
+    border-color: @white;
+    opacity: 1;
+    animation: flash linear 1s infinite;
+}
+
+@-webkit-keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .5; } 
+	100% { opacity: 1; }
+}
+@keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .5; } 
+	100% { opacity: 1; }
+}
+
+.progress-background {
+    position: absolute;
+    background-color: @yellow;
+    width: 100%;
+    bottom: 0;
+    margin-left: -1rem;
+}
+
+.ui[class*="bottom left attached"].label {
+    border-bottom-left-radius: 0px !important;
+}
+.ui.white.header {
+    color: @white !important;
+}

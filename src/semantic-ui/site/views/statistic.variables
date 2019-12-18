@@ -1,0 +1,9 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+@yellow: #FEDC01;
+@red: #E50041;
+@blue: #005CA7;
+@black: #1D1D1B;
+@white: #FFFFFF;
+@valueColor: @yellow;

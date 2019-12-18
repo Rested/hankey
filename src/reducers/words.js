@@ -37,12 +37,14 @@ function words(state = initialState, action){
                             errors: state.currentWordErrors,
                         }],
                         streak: state.streak + 1,
+                        bestStreak: Math.max(state.bestStreak, state.streak + 1),
                     }
                 }
                 return {
                     ...state,
                     currentWordProgress: newWordProgress,
                     streak: state.streak + 1,
+                    bestStreak: Math.max(state.bestStreak, state.streak + 1),
                     currentWordStartDateTime: state.currentWordStartDateTime || action.pressDate,
                 }
             }

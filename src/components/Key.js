@@ -10,13 +10,6 @@ import {
 } from '../constants';
 
 
-const baseProgressStyle = {
-    position: 'absolute',
-    backgroundColor: 'lightgreen',
-    width: '100%',
-    bottom: 0,
-    marginLeft: '-1rem'
-}
 export default function Key(props) {
     const {
         english,
@@ -25,12 +18,13 @@ export default function Key(props) {
         style,
         progress,
         level,
+        className,
         ...otherProps
     } = props;
 
     return (
-        <Segment columns={2} className='key' {...otherProps} style={style||{}}>
-            {progress ? <div style={{height: `${((progress - LEVEL_BREAKPOINTS[level-1])/(LEVEL_BREAKPOINTS[level] - LEVEL_BREAKPOINTS[level-1]))*100}%`, ...baseProgressStyle}}/> : null}
+        <Segment columns={2} className={`${className} key`} {...otherProps} style={style||{}}>
+            {progress ? <div className='progress-background' style={{height: `${((progress - LEVEL_BREAKPOINTS[level-1])/(LEVEL_BREAKPOINTS[level] - LEVEL_BREAKPOINTS[level-1]))*100}%`,}}/> : null}
             <Grid>
                 <GridRow style={{paddingBottom: 0, paddingTop: '0.1rem'}} verticalAlign='top'>
                     <GridColumn textAlign='left' style={{paddingRight: '0.3rem', paddingLeft: '0.5rem'}}>

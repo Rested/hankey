@@ -5,6 +5,7 @@ __pycache__
 /.pnp
 .pnp.js
 character_frequency/
+translate/
 # testing
 /coverage
 

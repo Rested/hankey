@@ -25,6 +25,8 @@ export default {
         currentWordProgress: '',
         currentWordErrors: [],
         currentWordStartDateTime: null,
+        streak: 0,
+        bestStreak: 0,
         history: [] // Shape: 
         // {
         //    word: "것",

@@ -16,8 +16,8 @@ function App() {
     return (
         <Provider store={hankeyStore}>
           <Container className='App'>
-            <Header as='h1'>Hankey</Header>
-            <Header as='h3' style={{marginTop: 0}}>Learn 2 set Hangul keyboard</Header>
+            <Header as='h1' color='yellow'>HanKey</Header>
+            <Header as='h3' color='white' style={{marginTop: 0}}>Learn 2-set Hangul keyboard</Header>
             <Divider/>
             <Menu/>
           </Container>

@@ -1,0 +1,14 @@
+/*******************************
+         Site Overrides
+*******************************/
+@black: #1D1D1B;
+
+.segment {
+    color: @black;
+}
+
+.ui.horizontal.segments > .segment {
+    background-color: white;
+}
+
+

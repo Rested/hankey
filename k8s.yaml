@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
       - name: hankey
-        image: docker.pkg.github.com/rested/hankey/hankey:0.1.2
+        image: restd/hankey:0.2.1
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
         resources:
           limits:
-            cpu: 100m
-            memory: 100m 
+            cpu: "500m"
+            memory: "500Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -41,7 +41,14 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: hankey-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  tls:
+  - hosts:
+    - hankey.rtcode.xyz
+    secretName: hankey-tls2
   rules:
   - host: hankey.rtcode.xyz
     http:

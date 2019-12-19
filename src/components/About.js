@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Segment, Header, List
 } from 'semantic-ui-react';
-
+import Obfuscate from 'react-obfuscate';
 
 export default function About() {
     return (
@@ -33,6 +33,15 @@ export default function About() {
                     <List.Item><a href="https://www.ibm.com/watson/services/language-translator/">IBM&#39;s translate api</a> for translations of vocabulary (much more accurate than google or bing for korean words)</List.Item>
                     <List.Item><a href="http://konlpy.org/en/latest/">KoNLPy</a> for its corpuses and determining character frequency.</List.Item>
                 </List>  
+            </Segment>
+            <Segment textAlign='left'>
+                Contact me here: <Obfuscate
+                email="reuben@rtcode.xyz"
+                headers={{
+                    subject: "Hey!",
+                    body: "Hankey..."
+                }}
+                />
             </Segment>
         </Segment.Group>
     )

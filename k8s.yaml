@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: hankey
-        image: restd/hankey:0.2.1
+        image: restd/hankey:0.3.0
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

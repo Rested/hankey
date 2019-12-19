@@ -20,3 +20,10 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         tag_names: true
         registry: docker.pkg.github.com 
+    - name: Publish to dockerhub
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: restd/hankey
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        tag_names: true

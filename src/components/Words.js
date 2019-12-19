@@ -12,19 +12,22 @@ import {
 } from '../core/hooks';
 import translations from '../core/translations';
 
-function Words({onPress, currentWord, currentWordRemaining, currentWordErrors, currentWordProgress}){
+function Words({onPress,muted, currentWord, currentWordRemaining, currentWordErrors, currentWordProgress}){
     const {
         speak,
     } = useSpeechSynthesis();
 
 
     useEffect(()=> {
-        speak({
-            text: currentWord,
-            lang: 'ko-KR',
-            rate: 0.6
-        })
-    }, [currentWord]);
+        if(!muted){
+            speak({
+                text: currentWord,
+                lang: 'ko-KR',
+                rate: 0.6
+            })
+        }
+        
+    }, [currentWord, muted]);
     
 
     useEffect(() => {
@@ -107,6 +110,7 @@ function Words({onPress, currentWord, currentWordRemaining, currentWordErrors, c
 const mapStateToProps = state => {
     const disProg = disassemble(state.words.currentWordProgress);
     return {
+        muted: state.base.muted,
         currentWord: state.words.currentWord,
         currentWordRemaining: assemble(disassemble(state.words.currentWord).filter((c, i) => 
             i >= disProg.length || disProg[i] !== c

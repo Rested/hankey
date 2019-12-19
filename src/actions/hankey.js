@@ -6,6 +6,7 @@ import {
 
 export const PRESS_KEY = 'PRESS_KEY'
 export const CHANGE_MODE = 'CHANGE_MODE'
+export const MUTE = 'MUTE'
 
 // action creators
 export function changeMode(mode) {
@@ -22,5 +23,11 @@ export function pressKey(key, mode) {
         mode,
         pressDate: new Date(),
         random: allKoreanCharacters.map(_ => Math.random()),
+    }
+}
+
+export function toggleMute(){
+    return {
+        type: MUTE
     }
 }

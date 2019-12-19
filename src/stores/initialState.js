@@ -6,6 +6,7 @@ import {MODE_GAME} from '../constants';
 export default {
     base: {
         mode: MODE_GAME,
+        muted: false,
     },
     keys: {
         keyState: allKoreanCharacters.map(character => ({

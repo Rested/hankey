@@ -34,7 +34,8 @@ function Keyboard({
     removedKeys,
     targetCharacter,
     failures,
-    onPress
+    onPress,
+    muted,
 }) {
     const [animating, setAnimating] = useState(false);
     const [
@@ -73,14 +74,15 @@ function Keyboard({
         if (previousTargetCharacter && targetCharacter && previousTargetCharacter !== targetCharacter) {
             setAnimating(previousTargetCharacter);
             cancel();
-
             speak({
                 text: soundMapping[previousTargetCharacter],
                 lang: 'ko-KR',
-                rate: 0.6
+                rate: 0.6,
+                volume: muted ? 0 : 100,
             });
+            
         }
-    }, [targetCharacter, previousTargetCharacter, speak]);
+    }, [targetCharacter, previousTargetCharacter, speak, muted]);
     useEffect(() => {
         return () => {
             console.log('unmount');
@@ -130,7 +132,8 @@ Keyboard.defaultProps = {
 const mapStateToProps = state => ({
     removedKeys: state.keys.disabledKeys,
     failures: state.keys.keypresses,
-    targetCharacter: state.keys.targetCharacter
+    targetCharacter: state.keys.targetCharacter,
+    muted: state.base.muted,
 });
 const mapDispatchToProps = dispatch => {
     return {

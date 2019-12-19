@@ -72,7 +72,7 @@ export const useSpeechSynthesis = (props = {}) => {
 
     const speak = (args = {}) => {
         const {
-            voice = null, text = '', lang = null, rate = 1, pitch = 1,
+            voice = null, text = '', lang = null, rate = 1, pitch = 1, volume = 100
         } = args;
         setSpeaking(true);
         // Firefox won't repeat an utterance that has been
@@ -82,6 +82,7 @@ export const useSpeechSynthesis = (props = {}) => {
         if (voice) utterance.voice = voice;
         utterance.onend = handleEnd;
         if (lang) utterance.lang = lang;
+        utterance.volume = volume;
         utterance.rate = rate;
         utterance.pitch = pitch;
         setCurrentUtterance(utterance);

@@ -1,4 +1,4 @@
-import { CHANGE_MODE } from '../actions/hankey';
+import { CHANGE_MODE, MUTE } from '../actions/hankey';
 import initialState from '../stores/initialState';
 
 function base(state = initialState, action){
@@ -7,6 +7,11 @@ function base(state = initialState, action){
             return {
                 ...state,
                 mode: action.mode,
+            }
+        case MUTE:
+            return {
+                ...state,
+                muted: !state.muted,
             }
         default:
             return state;

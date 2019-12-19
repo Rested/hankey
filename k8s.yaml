@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hankey-deployment
+  labels:
+    app: hankey
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hankey
+  template:
+    metadata:
+      labels:
+        app: hankey
+    spec:
+      containers:
+      - name: hankey
+        image: docker.pkg.github.com/rested/hankey/hankey:0.1.2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100m 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hankey-service
+spec:
+  selector:
+    app: hankey
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hankey-ingress
+spec:
+  rules:
+  - host: hankey.rtcode.xyz
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hankey-service
+          servicePort: 80

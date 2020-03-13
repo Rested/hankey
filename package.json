@@ -1,6 +1,7 @@
 {
   "name": "hankey",
   "version": "0.4.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@semantic-ui-react/bootstrap": "^1.2.1",
